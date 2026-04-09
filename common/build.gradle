@@ -1,13 +1,3 @@
 apply plugin: 'net.fabricmc.fabric-loom'
 
 apply from: "https://raw.githubusercontent.com/K1miram/mod_gradle_scripts/${mod_gradle_script_version}/mod.gradle"
-
-apply plugin: 'maven-publish'
-
-publishing {
-    publications {
-        create("mavenJava", MavenPublication) {
-            from components.java
-        }
-    }
-}
