@@ -4,3 +4,13 @@ plugins {
 }
 
 apply from: "https://raw.githubusercontent.com/K1miram/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
+
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            from components.java
+        }
+    }
+}
