@@ -2,16 +2,18 @@ plugins {
     id 'net.fabricmc.fabric-loom' version "${fabric_loom_version}" apply false
 }
 
-apply plugin: 'java'
-apply plugin: 'maven-publish'
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
 
-group = "com.github.K1miram"
-version = "${mod_version}+${minecraft_version}"
+    group = "com.github.K1miram"
+    version = "${mod_version}+${minecraft_version}"
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+            }
         }
     }
 }
