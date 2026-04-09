@@ -41,8 +41,9 @@ public class ImageLib {
     private final Map<String, Integer> attemptsToDownloadImage = new HashMap<>();
     private final Map<String, Integer> attemptsToDownloadGif = new HashMap<>();
     private final int maxAttempts;
+    private final Size defaultImageSize;
 
-    public ImageLib(String namespace, int maxAttempts) {
+    public ImageLib(String namespace, int maxAttempts, Size defaultImageSize) {
         this.namespace = namespace;
         this.logger = LoggerFactory.getLogger(namespace);
         this.maxAttempts = maxAttempts;
@@ -50,10 +51,19 @@ public class ImageLib {
         this.attemptsToDownloadImage.put(null, maxAttempts);
         this.attemptsToDownloadGif.put("", maxAttempts);
         this.attemptsToDownloadGif.put(null, maxAttempts);
+        this.defaultImageSize = defaultImageSize;
     }
 
     public ImageLib(String namespace) {
-        this(namespace, 3);
+        this(namespace, 3, new Size(64, 64));
+    }
+
+    public ImageLib(String namespace, int maxAttempts) {
+        this(namespace, maxAttempts, new Size(64, 64));
+    }
+
+    public ImageLib(String namespace, Size defaultImageSize) {
+        this(namespace, 3, defaultImageSize);
     }
 
     public void downloadImage(String url, Type type) {
@@ -230,7 +240,11 @@ public class ImageLib {
 
 
     public Size getImageSize(String url) {
-        return registeredImages.containsKey(url) ? registeredImages.get(url).size() : new Size(64, 64);
+        return getImageSize(url, defaultImageSize);
+    }
+
+    public Size getImageSize(String url, Size defaultSize) {
+        return registeredImages.containsKey(url) ? registeredImages.get(url).size() : defaultSize;
     }
 
     public Size fitImageSize(String url, int areaWidth, int areaHeight) {
@@ -243,7 +257,11 @@ public class ImageLib {
     }
 
     public Size getGifSize(String url) {
-        return registeredGifs.containsKey(url) ? registeredGifs.get(url).getGifSize() : new Size(64, 64);
+        return getGifSize(url, defaultImageSize);
+    }
+
+    public Size getGifSize(String url, Size defaultSize) {
+        return registeredGifs.containsKey(url) ? registeredGifs.get(url).getGifSize() : defaultSize;
     }
 
     public Size fitGifSize(String url, int areaWidth, int areaHeight) {
