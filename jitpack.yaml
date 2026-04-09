@@ -1,0 +1,4 @@
+jdk:
+  - openjdk25
+install:
+  - ./gradlew :common:publishToMavenLocal -Pgroup=com.github.K1miram
