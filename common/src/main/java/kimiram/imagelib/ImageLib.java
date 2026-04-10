@@ -66,6 +66,7 @@ public class ImageLib {
         this(namespace, 3, defaultImageSize);
     }
 
+
     public void downloadImage(String url, Type type) {
         if (type == Type.STATIC_IMAGE) {
             if (!loadingImages.containsKey(url) && !registeredImages.containsKey(url) && attemptsToDownloadImage.getOrDefault(url, 0) < maxAttempts) {
@@ -199,19 +200,26 @@ public class ImageLib {
         downloadedGifs.remove(url);
     }
 
-
-    public Identifier getImageId(String url) {
-        return getImageId(url, true);
+    public Identifier getImageId(String url, Type type) {
+        return getImageId(url, type, true);
     }
 
-    public Identifier getImageId(String url, boolean shouldDownload) {
+    public Identifier getImageId(String url, Type type, boolean allowDownload) {
+        if (type == Type.STATIC_IMAGE) {
+            return getStaticImageId(url, allowDownload);
+        } else {
+            return getGifFrameId(url, allowDownload);
+        }
+    }
+
+    private Identifier getStaticImageId(String url, boolean allowDownload) {
         if (downloadedImages.containsKey(url)) {
             registerStaticImage(url);
         }
         if (registeredImages.containsKey(url)) {
             return registeredImages.get(url).id();
         }
-        if (shouldDownload) {
+        if (allowDownload) {
             if (!loadingImages.containsKey(url) && attemptsToDownloadImage.getOrDefault(url, 0) < maxAttempts) {
                 downloadStaticImage(url);
             }
@@ -219,18 +227,14 @@ public class ImageLib {
         return DEFAULT_IMAGE;
     }
 
-    public Identifier getGifFrameId(String url) {
-        return getGifFrameId(url, true);
-    }
-
-    public Identifier getGifFrameId(String url, boolean shouldDownload) {
+    private Identifier getGifFrameId(String url, boolean allowDownload) {
         if (downloadedGifs.containsKey(url)) {
             registerGif(url);
         }
         if (registeredGifs.containsKey(url)) {
             return registeredGifs.get(url).getCurrentFrame();
         }
-        if (shouldDownload) {
+        if (allowDownload) {
             if (!loadingGifs.containsKey(url) && attemptsToDownloadGif.getOrDefault(url, 0) < maxAttempts) {
                 downloadGif(url);
             }
@@ -239,16 +243,45 @@ public class ImageLib {
     }
 
 
-    public Size getImageSize(String url) {
-        return getImageSize(url, defaultImageSize);
+    public Size getImageSize(String url, Type type) {
+        return getImageSize(url, type, defaultImageSize);
     }
 
-    public Size getImageSize(String url, Size defaultSize) {
+    public Size getImageSize(String url, Type type, Size defaultSize) {
+        if (type == Type.STATIC_IMAGE) {
+            return getStaticImageSize(url, defaultSize);
+        } else {
+            return getGifSize(url, defaultSize);
+        }
+    }
+
+    private Size getStaticImageSize(String url) {
+        return getStaticImageSize(url, defaultImageSize);
+    }
+
+    private Size getStaticImageSize(String url, Size defaultSize) {
         return registeredImages.containsKey(url) ? registeredImages.get(url).size() : defaultSize;
     }
 
-    public Size fitImageSize(String url, int areaWidth, int areaHeight) {
-        Size imageSize = getImageSize(url);
+    private Size getGifSize(String url) {
+        return getGifSize(url, defaultImageSize);
+    }
+
+    private Size getGifSize(String url, Size defaultSize) {
+        return registeredGifs.containsKey(url) ? registeredGifs.get(url).getGifSize() : defaultSize;
+    }
+
+
+    public Size fitImageSize(String url, Type type, int areaWidth, int areaHeight) {
+        if (type == Type.STATIC_IMAGE) {
+            return fitStaticImageSize(url, areaWidth, areaHeight);
+        } else {
+            return fitGifSize(url, areaWidth, areaHeight);
+        }
+    }
+
+    private Size fitStaticImageSize(String url, int areaWidth, int areaHeight) {
+        Size imageSize = getStaticImageSize(url);
         if (imageSize.width() * areaHeight > imageSize.height() * areaWidth) {
             return new Size(areaWidth, imageSize.height() * areaWidth / imageSize.width());
         } else {
@@ -256,15 +289,7 @@ public class ImageLib {
         }
     }
 
-    public Size getGifSize(String url) {
-        return getGifSize(url, defaultImageSize);
-    }
-
-    public Size getGifSize(String url, Size defaultSize) {
-        return registeredGifs.containsKey(url) ? registeredGifs.get(url).getGifSize() : defaultSize;
-    }
-
-    public Size fitGifSize(String url, int areaWidth, int areaHeight) {
+    private Size fitGifSize(String url, int areaWidth, int areaHeight) {
         Size gifSize = getGifSize(url);
         if (gifSize.width() * areaHeight > gifSize.height() * areaWidth) {
             return new Size(areaWidth, gifSize.height() * areaWidth / gifSize.width());
@@ -277,8 +302,8 @@ public class ImageLib {
     private record DownloadedImage(Identifier id, byte[] bytes) {
     }
 
-    public record Image(Identifier id, Size size) {
-        public Image(Identifier id, int width, int height) {
+    private record Image(Identifier id, Size size) {
+        private Image(Identifier id, int width, int height) {
             this(id, new Size(width, height));
         }
     }
@@ -302,11 +327,11 @@ public class ImageLib {
             this.time = Util.getMillis();
         }
 
-        public Size getGifSize() {
+        private Size getGifSize() {
             return size;
         }
 
-        public Identifier getCurrentFrame() {
+        private Identifier getCurrentFrame() {
             if (Util.getMillis() - time >= frames.get(currentImage).delay) {
                 currentImage = (currentImage + 1) % frames.size();
                 time = Util.getMillis();

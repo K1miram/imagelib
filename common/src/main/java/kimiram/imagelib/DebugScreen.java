@@ -54,15 +54,8 @@ public class DebugScreen extends Screen {
 
         graphics.outline(5, 5, 150, 100, 0x33FFFFFF);
 
-        Identifier id;
-        ImageLib.Size size;
-        if (type == ImageLib.Type.GIF) {
-            id = imageHelper.getGifFrameId(url);
-            size = imageHelper.fitGifSize(url, 150, 100);
-        } else {
-            id = imageHelper.getImageId(url);
-            size = imageHelper.fitImageSize(url, 150, 100);
-        }
+        Identifier id = imageHelper.getImageId(url, type);
+        ImageLib.Size size = imageHelper.fitImageSize(url, type, 150, 100);
 
         graphics.blit(RenderPipelines.GUI_TEXTURED, id, 5, 5, 0, 0,
                 size.width(), size.height(), size.width(), size.height(), size.width(), size.height());
