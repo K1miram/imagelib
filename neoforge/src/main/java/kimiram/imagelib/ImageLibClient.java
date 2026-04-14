@@ -13,7 +13,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
 import static kimiram.imagelib.Constants.MOD_ID;
 
-@Mod(MOD_ID)
+@Mod(value = MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
 public class ImageLibClient {
     public static final KeyMapping openDebugScreenKey = new KeyMapping(
