@@ -1,6 +1,6 @@
 package kimiram.imagelib;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -49,15 +49,15 @@ public class DebugScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractRenderState(graphics, mouseX, mouseY, a);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-        graphics.outline(5, 5, 150, 100, 0x33FFFFFF);
+        guiGraphics.renderOutline(5, 5, 150, 100, 0x33FFFFFF);
 
         Identifier id = imageHelper.getImageId(url, type);
         ImageLib.Size size = imageHelper.fitImageSize(url, type, 150, 100);
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, id, 5, 5, 0, 0,
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, id, 5, 5, 0, 0,
                 size.width(), size.height(), size.width(), size.height(), size.width(), size.height());
     }
 }
