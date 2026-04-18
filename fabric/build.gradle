@@ -8,9 +8,6 @@ publishing {
     publications {
         create("mavenJava", MavenPublication) {
             from components.java
-            pom.withXml {
-                asNode().remove(asNode().get("dependencies"))
-            }
         }
     }
 }
