@@ -12,7 +12,9 @@ publishing {
         create("mavenJava", MavenPublication) {
             from components.java
             pom.withXml {
-                asNode().remove(asNode().get("dependencies"))
+                asNode().dependencies.dependency.each { dep ->
+                    assert dep.parent().remove(dep)
+                }
             }
         }
     }
