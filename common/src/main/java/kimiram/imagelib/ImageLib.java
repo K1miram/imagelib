@@ -1,10 +1,10 @@
 package kimiram.imagelib;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.Util;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,13 +26,13 @@ import static kimiram.imagelib.Constants.MOD_ID;
 
 ///
 public class ImageLib {
-    private static final Identifier DEFAULT_IMAGE = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/default_image.png");
+    private static final ResourceLocation DEFAULT_IMAGE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/default_image.png");
 
     private final String namespace;
     private final Logger logger;
     private int imagesCount = 0;
     private int gifsCount = 0;
-    private final Map<String, Identifier> loadingImages = new HashMap<>();
+    private final Map<String, ResourceLocation> loadingImages = new HashMap<>();
     private final Map<String, String> loadingGifs = new HashMap<>();
     private final Map<String, DownloadedImage> downloadedImages = new HashMap<>();
     private final Map<String, List<DownloadedGifFrame> > downloadedGifs = new HashMap<>();
@@ -80,7 +80,7 @@ public class ImageLib {
     }
 
     private void downloadStaticImage(String url) {
-        Identifier id = Identifier.fromNamespaceAndPath(namespace, "imagelib_image" + imagesCount);
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace, "imagelib_image" + imagesCount);
         imagesCount++;
         loadingImages.put(url, id);
         attemptsToDownloadImage.put(url, attemptsToDownloadImage.getOrDefault(url, 0) + 1);
@@ -149,7 +149,7 @@ public class ImageLib {
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ImageIO.write(frame, "png", baos);
-                    Identifier id = Identifier.fromNamespaceAndPath(namespace, name + "_frame" + i);
+                    ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace, name + "_frame" + i);
                     if (delayTime == 0) delayTime = 6;
                     frames.add(new DownloadedGifFrame(id, baos.toByteArray(), delayTime * 10));
                 }
@@ -200,11 +200,11 @@ public class ImageLib {
         downloadedGifs.remove(url);
     }
 
-    public Identifier getImageId(String url, Type type) {
+    public ResourceLocation getImageId(String url, Type type) {
         return getImageId(url, type, true);
     }
 
-    public Identifier getImageId(String url, Type type, boolean allowDownload) {
+    public ResourceLocation getImageId(String url, Type type, boolean allowDownload) {
         if (type == Type.STATIC_IMAGE) {
             return getStaticImageId(url, allowDownload);
         } else {
@@ -212,7 +212,7 @@ public class ImageLib {
         }
     }
 
-    private Identifier getStaticImageId(String url, boolean allowDownload) {
+    private ResourceLocation getStaticImageId(String url, boolean allowDownload) {
         if (downloadedImages.containsKey(url)) {
             registerStaticImage(url);
         }
@@ -227,7 +227,7 @@ public class ImageLib {
         return DEFAULT_IMAGE;
     }
 
-    private Identifier getGifFrameId(String url, boolean allowDownload) {
+    private ResourceLocation getGifFrameId(String url, boolean allowDownload) {
         if (downloadedGifs.containsKey(url)) {
             registerGif(url);
         }
@@ -299,20 +299,20 @@ public class ImageLib {
     }
 
 
-    private record DownloadedImage(Identifier id, byte[] bytes) {
+    private record DownloadedImage(ResourceLocation id, byte[] bytes) {
     }
 
-    private record Image(Identifier id, Size size) {
-        private Image(Identifier id, int width, int height) {
+    private record Image(ResourceLocation id, Size size) {
+        private Image(ResourceLocation id, int width, int height) {
             this(id, new Size(width, height));
         }
     }
 
 
-    private record DownloadedGifFrame(Identifier id, byte[] bytes, int delay) {
+    private record DownloadedGifFrame(ResourceLocation id, byte[] bytes, int delay) {
     }
 
-    private record GifFrame(Identifier id, int delay) {
+    private record GifFrame(ResourceLocation id, int delay) {
     }
 
     private static class Gif {
@@ -331,7 +331,7 @@ public class ImageLib {
             return size;
         }
 
-        private Identifier getCurrentFrame() {
+        private ResourceLocation getCurrentFrame() {
             if (Util.getMillis() - time >= frames.get(currentImage).delay) {
                 currentImage = (currentImage + 1) % frames.size();
                 time = Util.getMillis();

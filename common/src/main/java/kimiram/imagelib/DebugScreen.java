@@ -6,7 +6,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class DebugScreen extends Screen {
     private String url = "";
@@ -52,9 +52,9 @@ public class DebugScreen extends Screen {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-        guiGraphics.renderOutline(5, 5, 150, 100, 0x33FFFFFF);
+        guiGraphics.submitOutline(5, 5, 150, 100, 0x33FFFFFF);
 
-        Identifier id = imageHelper.getImageId(url, type);
+        ResourceLocation id = imageHelper.getImageId(url, type);
         ImageLib.Size size = imageHelper.fitImageSize(url, type, 150, 100);
 
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, id, 5, 5, 0, 0,
