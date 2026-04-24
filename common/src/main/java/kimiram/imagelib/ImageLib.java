@@ -169,7 +169,7 @@ public class ImageLib {
         try {
             DownloadedImage image = downloadedImages.get(url);
             NativeImage nativeImage = NativeImage.read(image.bytes());
-            DynamicTexture texture = new DynamicTexture(nativeImage::toString, nativeImage);
+            DynamicTexture texture = new DynamicTexture(nativeImage);
             Minecraft.getInstance().getTextureManager().register(image.id(), texture);
             registeredImages.put(url, new Image(image.id(), nativeImage.getWidth(), nativeImage.getHeight()));
         } catch (Exception e) {
@@ -186,7 +186,7 @@ public class ImageLib {
             int width = 0, height = 0;
             for (DownloadedGifFrame frame: downloadedFrames) {
                 NativeImage nativeImage = NativeImage.read(frame.bytes());
-                DynamicTexture texture = new DynamicTexture(nativeImage::toString, nativeImage);
+                DynamicTexture texture = new DynamicTexture(nativeImage);
                 Minecraft.getInstance().getTextureManager().register(frame.id(), texture);
                 frames.add(new GifFrame(frame.id(), frame.delay()));
                 width = nativeImage.getWidth();

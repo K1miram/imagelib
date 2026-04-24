@@ -3,7 +3,7 @@ package kimiram.imagelib;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiGraphics;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,7 +20,7 @@ public class ImageLibClient {
             "key.imagelib.open_debug_screen",
             InputConstants.Type.KEYSYM,
             -1,
-            new KeyMapping.Category(ResourceLocation.fromNamespaceAndPath(MOD_ID, "debug"))
+            "key.category.imagelib.debug"
     );
     public static final ImageLib imageHelper = new ImageLib(MOD_ID);
 

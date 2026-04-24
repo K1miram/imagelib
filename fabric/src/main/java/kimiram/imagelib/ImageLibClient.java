@@ -5,7 +5,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.resources.ResourceLocation;
 
 import static kimiram.imagelib.Constants.MOD_ID;
 
@@ -14,7 +13,7 @@ public class ImageLibClient implements ClientModInitializer {
             "key.imagelib.open_debug_screen",
             InputConstants.Type.KEYSYM,
             -1,
-            new KeyMapping.Category(ResourceLocation.fromNamespaceAndPath(MOD_ID, "debug"))
+            "key.category.imagelib.debug"
     ));
     public static final ImageLib imageHelper = new ImageLib(MOD_ID);
 
