@@ -14,6 +14,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.URL;
@@ -168,7 +169,7 @@ public class ImageLib {
     private void registerStaticImage(String url) {
         try {
             DownloadedImage image = downloadedImages.get(url);
-            NativeImage nativeImage = NativeImage.read(image.bytes());
+            NativeImage nativeImage = NativeImage.read(new ByteArrayInputStream(image.bytes()));
             DynamicTexture texture = new DynamicTexture(nativeImage);
             Minecraft.getInstance().getTextureManager().register(image.id(), texture);
             registeredImages.put(url, new Image(image.id(), nativeImage.getWidth(), nativeImage.getHeight()));
@@ -185,7 +186,7 @@ public class ImageLib {
             List<GifFrame> frames = new ArrayList<>();
             int width = 0, height = 0;
             for (DownloadedGifFrame frame: downloadedFrames) {
-                NativeImage nativeImage = NativeImage.read(frame.bytes());
+                NativeImage nativeImage = NativeImage.read(new ByteArrayInputStream(frame.bytes()));
                 DynamicTexture texture = new DynamicTexture(nativeImage);
                 Minecraft.getInstance().getTextureManager().register(frame.id(), texture);
                 frames.add(new GifFrame(frame.id(), frame.delay()));
