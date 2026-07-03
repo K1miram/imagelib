@@ -32,7 +32,7 @@ public class ImageLibClient {
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
         if (openDebugScreenKey.isDown()) {
-            Minecraft.getInstance().setScreen(new DebugScreen(imageHelper));
+            Minecraft.getInstance().setScreenAndShow(new DebugScreen(imageHelper));
         }
     }
 }

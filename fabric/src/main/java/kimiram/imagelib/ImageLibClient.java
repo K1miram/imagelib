@@ -22,7 +22,7 @@ public class ImageLibClient implements ClientModInitializer {
     public void onInitializeClient() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (openDebugScreenKey.isDown()) {
-                client.setScreen(new DebugScreen(imageHelper));
+                client.setScreenAndShow(new DebugScreen(imageHelper));
             }
         });
     }
