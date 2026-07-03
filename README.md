@@ -40,7 +40,7 @@ Replace <version> with mod version you want to use. Full list of available versi
 
 All versions have the same structure: <mod_version>-<minecraft_version>-<patch_number_if_there_is_one>
 
-I recommend to always use the latest mod version
+Minecraft version is the minimal version this version of mod works on.
 
 #
 To load custom images you need to create ImageLib instance. Then you can download image or gif by using `ImageLib.downloadImage(...)` method. 
