@@ -18,7 +18,7 @@ import static kimiram.imagelib.Constants.MOD_ID;
 public class ImageLibClient {
     public static final KeyMapping openDebugScreenKey = new KeyMapping(
             "key.imagelib.open_debug_screen",
-            InputConstants.Type.KEYSYM,
+            InputConstants.Type.KEYBOARD,
             -1,
             new KeyMapping.Category(Identifier.fromNamespaceAndPath(MOD_ID, "debug"))
     );

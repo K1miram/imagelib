@@ -1,11 +1,11 @@
 license="MIT"
-issueTrackerURL=""
+issueTrackerURL="https://github.com/K1miram/imagelib/issues"
 
 [[mods]]
 modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
-displayURL=""
+displayURL="https://modrinth.com/project/XcIsB6q2"
 logoFile="assets/notes/icon.png"
 authors="Kimiram"
 description='''${mod_description}'''
@@ -13,7 +13,7 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"
-versionRange="[26.2.0.0,)"
+versionRange="[26.3.0.0,)"
 ordering="NONE"
 side="BOTH"
 
