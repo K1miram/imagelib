@@ -6,7 +6,7 @@ modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
 displayURL="https://modrinth.com/project/XcIsB6q2"
-logoFile="assets/notes/icon.png"
+iconFile="assets/imagelib/icon.png"
 authors="Kimiram"
 description='''${mod_description}'''
 
