@@ -19,7 +19,7 @@ public class ImageLibClient {
     public static final KeyMapping openDebugScreenKey = new KeyMapping(
             "key.imagelib.open_debug_screen",
             InputConstants.Type.KEYBOARD,
-            -1,
+            InputConstants.UNKNOWN.getValue(),
             new KeyMapping.Category(Identifier.fromNamespaceAndPath(MOD_ID, "debug"))
     );
     public static final ImageLib imageHelper = new ImageLib(MOD_ID);
